@@ -68,7 +68,7 @@ const mainVirtualMachine = new azure.compute.VirtualMachine("main", {
     tags: {
         environment: "staging",
     },
-    vmSize: infra_params.vmSize,
+    vmSize: infra_params.vmsize,
 });
 
 //Create an Azure resource (Storage Account)

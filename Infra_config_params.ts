@@ -13,13 +13,13 @@ export class Infra_config_params{
     username:string;
     password:string;
     location:string;
-    vmSize:string;
+    vmsize:string;
     constructor(){
         this.prefix = this.config.require("prefix");
         this.username = this.config.require("username");
         this.password = this.config.require("password");
         this.location = this.config.require("location");
-        this.location = this.config.require("vmsize");
+        this.vmsize = this.config.require("vmsize");
     }
 
     check_location(){
