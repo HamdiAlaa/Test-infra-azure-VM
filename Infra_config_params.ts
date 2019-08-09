@@ -1,6 +1,5 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as azure from "@pulumi/azure";
-import { location } from "@pulumi/azure/config";
 
 //liste of azure location
 const location_l= ["EastUS","CentralUS","WestUS","SouthAfricaNorth"];
@@ -24,12 +23,12 @@ export class Infra_config_params{
 
     check_location(){
         location_l.forEach(element => {
-            if(element==location) this.fOUNDED_LOCATION=true;
+            if(element==this.location) this.fOUNDED_LOCATION=true;
         });
         //It suppose to be an exception
         if(this.fOUNDED_LOCATION == false) 
         {
-            console.log(location+"do not existe");
+            console.log(this.location+"do not existe");
             this.location = "";
 
     };
