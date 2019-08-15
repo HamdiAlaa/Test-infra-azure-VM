@@ -1,12 +1,11 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as azure from "@pulumi/azure";
-import {Infra_config_params} from "./Infra_config_params" ;
+// import {Infra_config_params} from "./Infra_config_params" ;
 
-const infra_params = new Infra_config_params();
-infra_params.thelog();
+let _config = require('../config/_az_vm.json');
 //Create an Azure Resource Group
 const resourceGroup = new azure.core.ResourceGroup("resourceGroup", {
-    location: infra_params.location,
+    location: _config.location,
 });
 
 
@@ -14,7 +13,7 @@ const resourceGroup = new azure.core.ResourceGroup("resourceGroup", {
 const mainVirtualNetwork = new azure.network.VirtualNetwork("main",{
     addressSpaces :["10.0.0.0/16"],
     location: resourceGroup.location,
-    name: `${infra_params.prefix}-network`,
+    name: `${_config.prefix}-network`,
     resourceGroupName: resourceGroup.name,
 });
 
@@ -35,18 +34,18 @@ const mainNetworkInterface = new azure.network.NetworkInterface("main", {
         subnetId: internal.id,
     }],
     location: resourceGroup.location,
-    name: `${infra_params.prefix}-nic`,
+    name: `${_config.prefix}-nic`,
     resourceGroupName: resourceGroup.name,
 });
 
 //Create the virtual machine 
 const mainVirtualMachine = new azure.compute.VirtualMachine("main", {
     location: resourceGroup.location,
-    name: `${infra_params.prefix}-vm`,
+    name: `${_config.prefix}-vm`,
     networkInterfaceIds: [mainNetworkInterface.id],
     osProfile: {
-        adminPassword: infra_params.password,
-        adminUsername: infra_params.username,
+        adminPassword: _config.password,
+        adminUsername: _config.username,
         computerName: "hostname",
     },
     osProfileLinuxConfig: {
@@ -68,7 +67,7 @@ const mainVirtualMachine = new azure.compute.VirtualMachine("main", {
     tags: {
         environment: "staging",
     },
-    vmSize: infra_params.vmsize,
+    vmSize: _config.vmsize,
 });
 
 //Create an Azure resource (Storage Account)
