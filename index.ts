@@ -39,9 +39,10 @@ const mainNetworkInterface = new azure.network.NetworkInterface("main", {
 });
 
 //Create the virtual machine 
+for (let index = 1; index <= _config.vmNumber; index++) {
 const mainVirtualMachine = new azure.compute.VirtualMachine("main", {
     location: resourceGroup.location,
-    name: `${_config.prefix}-vm`,
+    name: `${_config.prefix}-vm-${index}`,
     networkInterfaceIds: [mainNetworkInterface.id],
     osProfile: {
         adminPassword: _config.password,
@@ -69,7 +70,7 @@ const mainVirtualMachine = new azure.compute.VirtualMachine("main", {
     },
     vmSize: _config.vmsize,
 });
-
+}
 //Create an Azure resource (Storage Account)
 const account = new azure.storage.Account("storage", {
     resourceGroupName: resourceGroup.name,
