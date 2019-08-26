@@ -27,27 +27,28 @@ const internal = new azure.network.Subnet("internal",{
 });
 
 // main interface
-const mainNetworkInterface = new azure.network.NetworkInterface("main", {
+for (let index = 1; index <= _config.vmNumber; index++) {
+const mainNetworkInterface = new azure.network.NetworkInterface(`main${index}`, {
     ipConfigurations: [{
-        name: "testconfiguration1",
+        name: `testconfiguration${index}`,
         privateIpAddressAllocation: "Dynamic",
         subnetId: internal.id,
     }],
     location: resourceGroup.location,
-    name: `${_config.prefix}-nic`,
+    name: `${_config.prefix}-nic-${index}`,
     resourceGroupName: resourceGroup.name,
 });
 
 //Create the virtual machine 
-for (let index = 1; index <= _config.vmNumber; index++) {
-const mainVirtualMachine = new azure.compute.VirtualMachine("main", {
+
+const mainVirtualMachine = new azure.compute.VirtualMachine(`VM-${index}`, {
     location: resourceGroup.location,
     name: `${_config.prefix}-vm-${index}`,
     networkInterfaceIds: [mainNetworkInterface.id],
     osProfile: {
         adminPassword: _config.password,
         adminUsername: _config.username,
-        computerName: "hostname",
+        computerName: `hostname${index}`,
     },
     osProfileLinuxConfig: {
         disablePasswordAuthentication: false,
@@ -63,7 +64,7 @@ const mainVirtualMachine = new azure.compute.VirtualMachine("main", {
         caching: "ReadWrite",
         createOption: "FromImage",
         managedDiskType: "Standard_LRS",
-        name: "myosdisk1",
+        name: `mytestosdisk${index}`,
     },
     tags: {
         environment: "staging",
