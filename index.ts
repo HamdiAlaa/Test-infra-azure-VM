@@ -55,10 +55,10 @@ const mainVirtualMachine = new azure.compute.VirtualMachine(`VM-${index}`, {
     },
     resourceGroupName: resourceGroup.name,
     storageImageReference: {
-        offer: "UbuntuServer",
+        offer: _config.offer,
         publisher: "Canonical",
-        sku: "16.04-LTS",
-        version: "latest",
+        sku: _config.sku,
+        version: _config.version,
     },
     storageOsDisk: {
         caching: "ReadWrite",
