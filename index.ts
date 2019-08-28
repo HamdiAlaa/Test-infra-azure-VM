@@ -9,3 +9,4 @@ let main_config = require('../config/main_config.json');
 if(main_config.isAzure && !main_config.isAws){
     const az_infra = new az.Vms();
 }
+else if(!main_config.isAzure && main_config.isAws){}
