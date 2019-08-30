@@ -3,8 +3,8 @@ config:
   azure:clientSecret:
     secure: AAABAI6eyodQQgJPyEwwGS3xzF2+u9YL48o99T9K9XcvwOoiAvOqenOF54mRA4C5lNFzTQ3pHUsL5C6AaINQ2w==
   azure:environment: public
-  azure:subscriptionId: d4052f92-3530-47ed-8841-766a209d9067
-  azure:tenantId: dbd6664d-4eb9-46eb-99d8-5c43ba153c61
+  azure:subscriptionId:
+  azure:tenantId:
   infra-project-azure:location: WestUS
   infra-project-azure:password:
     secure: AAABAF8HiPLy4QFKvr2KHhh9SxWLmeIwSoNnHxY1BCIGnWOXpDeVP0xVtdSm/w==
