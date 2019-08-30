@@ -11,5 +11,5 @@ if(main_config.isAzure && !main_config.isAws){
     az_infra = new az.Vms();
 }
 else if(!main_config.isAzure && main_config.isAws){}
-export var ips = az_infra.ipAddresses;
+export var ips = az_infra.ipAddress;
 // export var listeIp = pulumi.output(az_infra.ipAddressesListe);
