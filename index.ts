@@ -6,7 +6,9 @@ let main_config = require('../config/main_config.json');
 
 
 /************ if it is azure infra********************/
+var az_infra:any;
 if(main_config.isAzure && !main_config.isAws){
-    const az_infra = new az.Vms();
+    az_infra = new az.Vms();
 }
 else if(!main_config.isAzure && main_config.isAws){}
+export var listeIp = pulumi.output(az_infra.ipAddressesListe);
