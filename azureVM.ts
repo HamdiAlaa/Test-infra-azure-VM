@@ -1,6 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as azure from "@pulumi/azure";
 import { Output, UnwrappedArray } from "@pulumi/pulumi";
+import { AzureEnvironment } from "ms-rest-azure";
 
 let _config = require('../config/_az_vm.json');
 
@@ -10,6 +11,8 @@ export class Vms {
     public connectionString: string;
     public ipAddressesListe: UnwrappedArray<string> = [];
     public ipAddress: Output<UnwrappedArray<string>>;
+    public dnsArrayString: UnwrappedArray<string> = [];
+    public dnsOutputArray: Output<UnwrappedArray<string>>;;
 
 
     constructor() {
@@ -41,9 +44,10 @@ export class Vms {
         for (let index = 1; index <= _config.vmNumber; index++) {
 
             // Now allocate a public IP and assign it to our NIC.
-            var publicIp = new azure.network.PublicIp(`server-ip${index}`, {
+            var publicIp = new azure.network.PublicIp(`serverIp${index}`, {
                 resourceGroupName,
                 allocationMethod: "Dynamic",
+                domainNameLabel:`vm-azure-dns${index}`,
             });
 
             var mainNetworkInterface = new azure.network.NetworkInterface(`main${index}`, {
@@ -93,15 +97,20 @@ export class Vms {
                 vmSize: _config.vmsize,
             });
 
-
+            
             // The public IP address is not allocated until the VM is running, so wait for that
             // resource to create, and then lookup the IP address again to report its public IP.
             var done = pulumi.all({ _: mainVirtualMachine.id, name: publicIp.name, resourceGroupName: publicIp.resourceGroupName });
             this.ipAddress = done.apply(d => {
-                const ip = azure.network.getPublicIP({ name: d.name, resourceGroupName: d.resourceGroupName });
+                const ip = azure.network.getPublicIP({ name: d.name, resourceGroupName: d.resourceGroupName }) ;
+                // this.dns.push(azure.network.getPublicIP({ name: d.name, resourceGroupName: d.resourceGroupName }).domainNameLabel);
                 this.ipAddressesListe.push(ip.ipAddress);
                 // this.ipAddressesListe.push(`192.168.1.${index}`);
                 return pulumi.output(this.ipAddressesListe);
+            });
+            this.dnsOutputArray = done.apply(d=>{
+                this.dnsArrayString.push(azure.network.getPublicIP({ name: d.name, resourceGroupName: d.resourceGroupName }).domainNameLabel+'.eastus.cloudapp.azure.com');
+                return pulumi.output(this.dnsArrayString)
             });
 
         }//End Boucle
