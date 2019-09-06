@@ -14,6 +14,7 @@ else if(!main_config.isAzure && main_config.isAws){}
 
 
 //EXPORTS
-export var ips = az_infra.ipAddress;
-export var dns = az_infra.dnsOutputArray;
+// export const ips = az_infra.ipAddress;
+export const ips = az_infra.ipAddressesList;
+export const dns = az_infra.dnsOutputArray;
 

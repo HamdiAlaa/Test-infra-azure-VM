@@ -1,6 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as azure from "@pulumi/azure";
-import { Output, UnwrappedArray } from "@pulumi/pulumi";
+import { Output, UnwrappedArray,Unwrap, output } from "@pulumi/pulumi";
 import { AzureEnvironment } from "ms-rest-azure";
 
 let _config = require('../config/_az_vm.json');
@@ -9,10 +9,8 @@ export class Vms {
     
     //Declarations
     public connectionString: string;
-    public ipAddressesListe: UnwrappedArray<string> = [];
-    public ipAddress: Output<UnwrappedArray<string>>;
-    public dnsArrayString: UnwrappedArray<string> = [];
-    public dnsOutputArray: Output<UnwrappedArray<string>>;;
+    public ipAddressesList: Output<string>[] = [];
+    public dnsOutputArray: Output<string>[] = [];
 
 
     constructor() {
@@ -44,13 +42,13 @@ export class Vms {
         for (let index = 1; index <= _config.vmNumber; index++) {
 
             // Now allocate a public IP and assign it to our NIC.
-            var publicIp = new azure.network.PublicIp(`serverIp${index}`, {
+            const publicIp = new azure.network.PublicIp(`serverIp${index}`, {
                 resourceGroupName,
                 allocationMethod: "Dynamic",
                 domainNameLabel:`vm-azure-dns${index}`,
             });
 
-            var mainNetworkInterface = new azure.network.NetworkInterface(`main${index}`, {
+            const mainNetworkInterface = new azure.network.NetworkInterface(`main${index}`, {
                 ipConfigurations: [{
                     name: `testconfiguration${index}`,
                     privateIpAddressAllocation: "Dynamic",
@@ -64,7 +62,7 @@ export class Vms {
 
             //Create the virtual machine 
 
-            var mainVirtualMachine = new azure.compute.VirtualMachine(`VM-${index}`, {
+            const mainVirtualMachine = new azure.compute.VirtualMachine(`VM-${index}`, {
                 location: resourceGroup.location,
                 name: `${_config.prefix}-vm-${index}`,
                 networkInterfaceIds: [mainNetworkInterface.id],
@@ -100,18 +98,15 @@ export class Vms {
             
             // The public IP address is not allocated until the VM is running, so wait for that
             // resource to create, and then lookup the IP address again to report its public IP.
-            var done = pulumi.all({ _: mainVirtualMachine.id, name: publicIp.name, resourceGroupName: publicIp.resourceGroupName });
-            this.ipAddress = done.apply(d => {
-                const ip = azure.network.getPublicIP({ name: d.name, resourceGroupName: d.resourceGroupName }) ;
-                // this.dns.push(azure.network.getPublicIP({ name: d.name, resourceGroupName: d.resourceGroupName }).domainNameLabel);
-                this.ipAddressesListe.push(ip.ipAddress);
-                // this.ipAddressesListe.push(`192.168.1.${index}`);
-                return pulumi.output(this.ipAddressesListe);
+            const done = pulumi.all({ _: mainVirtualMachine.id, name: publicIp.name, resourceGroupName: publicIp.resourceGroupName });
+            const ipAddres = done.apply(d => {
+                return pulumi.output(azure.network.getPublicIP({ name: d.name, resourceGroupName: d.resourceGroupName }).ipAddress);
             });
-            this.dnsOutputArray = done.apply(d=>{
-                this.dnsArrayString.push(azure.network.getPublicIP({ name: d.name, resourceGroupName: d.resourceGroupName }).domainNameLabel+'.eastus.cloudapp.azure.com');
-                return pulumi.output(this.dnsArrayString)
+            this.ipAddressesList.push(ipAddres);
+            const dns = done.apply(d=>{
+                return pulumi.output(azure.network.getPublicIP({ name: d.name, resourceGroupName: d.resourceGroupName }).domainNameLabel+'.eastus.cloudapp.azure.com');
             });
+            this.dnsOutputArray.push(dns);
 
         }//End Boucle
 
