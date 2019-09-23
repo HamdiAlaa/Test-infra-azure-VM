@@ -21,7 +21,7 @@ export class Vms {
         const resourceGroupName = resourceGroup.name;
         //NetWork
         const mainVirtualNetwork = new azure.network.VirtualNetwork("main", {
-            addressSpaces: ["10.0.0.0/8"],
+            addressSpaces: ["10.0.0.0/16"],
             location: resourceGroup.location,
             name: `${_config.prefix}-network`,
             resourceGroupName: resourceGroup.name,
@@ -29,7 +29,7 @@ export class Vms {
 
         //Subnet
         const internal = new azure.network.Subnet("internal", {
-            addressPrefix: "10.240.0.0/16",
+            addressPrefix: "10.0.2.0/24",
             name: "internal",
             resourceGroupName: resourceGroup.name,
             virtualNetworkName: mainVirtualNetwork.name
