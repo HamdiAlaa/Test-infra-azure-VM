@@ -1,10 +1,10 @@
 config:
   azure:clientId:
-  azure:clientSecret:
+  azure:clientSecret: 74559933-0f40-47cf-8470-a9763e3496e5
     secure:
   azure:environment: public
-  azure:subscriptionId:
-  azure:tenantId:
+  azure:subscriptionId: dee3523a-f456-475b-86af-606f2ff905d7
+  azure:tenantId: dbd6664d-4eb9-46eb-99d8-5c43ba153c61
   infra-project-azure:location: WestUS
   infra-project-azure:password:
     secure: AAABAF8HiPLy4QFKvr2KHhh9SxWLmeIwSoNnHxY1BCIGnWOXpDeVP0xVtdSm/w==
