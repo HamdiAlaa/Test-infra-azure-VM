@@ -1,7 +1,7 @@
 config:
-  azure:clientId: e5c53afa-aa89-42c6-a0a8-60c129b8002c
+  azure:clientId:
   azure:clientSecret:
-    secure: AAABAI6eyodQQgJPyEwwGS3xzF2+u9YL48o99T9K9XcvwOoiAvOqenOF54mRA4C5lNFzTQ3pHUsL5C6AaINQ2w==
+    secure:
   azure:environment: public
   azure:subscriptionId:
   azure:tenantId:
