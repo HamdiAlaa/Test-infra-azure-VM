@@ -1,6 +1,6 @@
 config:
-  azure:clientId:
-  azure:clientSecret: 74559933-0f40-47cf-8470-a9763e3496e5
+  azure:clientId: 74559933-0f40-47cf-8470-a9763e3496e5
+  azure:clientSecret: 
     secure:
   azure:environment: public
   azure:subscriptionId: dee3523a-f456-475b-86af-606f2ff905d7
