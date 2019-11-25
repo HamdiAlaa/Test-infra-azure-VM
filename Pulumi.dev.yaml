@@ -1,12 +1,13 @@
+encryptionsalt: v1:/j7XnxrdaDI=:v1:Jri1YYgx4uGJh917:gBbJEbAenr++LMTKZjdSNucSXJMNXQ==
 config:
-  azure:clientId: 74559933-0f40-47cf-8470-a9763e3496e5
-  azure:clientSecret: 
-    secure:
+  azure:clientId: dbfc723b-ad7b-4171-9d90-ae60f0b5750c
+  azure:clientSecret:
+    secure: v1:KJKHpTI/X/KEVeCT:Bjr+DdIACBNDAPCXdh/gBGmff0AKby9pWEJ7QS2zw8DrCfePRqHRZeJiZWlB0hdD
   azure:environment: public
   azure:subscriptionId: dee3523a-f456-475b-86af-606f2ff905d7
   azure:tenantId: dbd6664d-4eb9-46eb-99d8-5c43ba153c61
   infra-project-azure:location: WestUS
   infra-project-azure:password:
-    secure: AAABAF8HiPLy4QFKvr2KHhh9SxWLmeIwSoNnHxY1BCIGnWOXpDeVP0xVtdSm/w==
+    secure: v1:L6ipUdqyuF1tHwOh:+ulEv4InSabg9O9UTgp2kpfzEIqc7AgrwWmgxw==
   infra-project-azure:prefix: my-infra
   infra-project-azure:username: alaa
